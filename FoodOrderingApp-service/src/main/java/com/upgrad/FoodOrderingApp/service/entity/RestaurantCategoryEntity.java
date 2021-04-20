@@ -1,57 +1,63 @@
 package com.upgrad.FoodOrderingApp.service.entity;
-
+/*
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
+@SuppressWarnings("ALL")
 @Entity
 @Table(name = "restaurant_category")
-@NamedQueries(
-        {
-                @NamedQuery(name = "restaurantsByCategoryId", query = "select r from RestaurantCategoryEntity r where r.category.id=:id")
-        }
-)
+@NamedQueries({
 
-public class RestaurantCategoryEntity implements Serializable {
+        @NamedQuery(name = "getCategoriesByRestaurant", query = "SELECT r FROM RestaurantCategoryEntity r WHERE r.restaurantId= :restaurant ORDER BY r.categoryId.categoryName ASC "),
+        @NamedQuery(name = "getRestaurantByCategory", query = "SELECT r FROM RestaurantCategoryEntity r WHERE r.categoryId = :category ORDER BY r.restaurantId.customerRating DESC "),
+})
+public class RestaurantCategoryEntity {
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "restaurant_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "RESTAURANT_ID")
-    private RestaurantEntity restaurant;
+    @NotNull
+    private RestaurantEntity restaurantId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "CATEGORY_ID")
-    private CategoryEntity category;
+    @NotNull
+    private CategoryEntity categoryId;
 
-    public long getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public RestaurantEntity getRestaurant() {
-        return restaurant;
+
+    public RestaurantEntity getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurant(RestaurantEntity restaurant) {
-        this.restaurant = restaurant;
+    public void setRestaurantId(RestaurantEntity restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
-    public CategoryEntity getCategory() {
-        return category;
+
+    public CategoryEntity getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(CategoryEntity category) {
-        this.category = category;
+    public void setCategoryId(CategoryEntity categoryId) {
+        this.categoryId = categoryId;
     }
-}
+
+} */

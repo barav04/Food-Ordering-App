@@ -1,53 +1,70 @@
 package com.upgrad.FoodOrderingApp.service.entity;
 
-import com.upgrad.FoodOrderingApp.api.model.ItemList;
+import com.upgrad.FoodOrderingApp.service.common.ItemType;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "item")
 @NamedQueries(
         {
-                @NamedQuery(name = "itemByUuid", query = "select i from ItemEntity i where i.uuid=:uuid"),
-                @NamedQuery(name = "itemById", query = "select i from ItemEntity i where i.id=:id")
+                @NamedQuery(name = "getItemById", query = "select i from ItemEntity i where i.uuid=:itemUuid")
         }
 )
 
-public class ItemEntity implements Serializable {
 
+@Entity
+@Table(name = "item")
+public class ItemEntity {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @Column(name = "UUID")
     @Size(max = 200)
     private String uuid;
 
     @Column(name = "ITEM_NAME")
-    @NotNull
     @Size(max = 30)
-    private String itemName;
+    private String item_name;
 
-    @Column(name="PRICE")
-    @NotNull
-    private Integer price;
+    @Column(name = "PRICE")
+    private int price;
 
-    /*@Column(name = "TYPE")
-    @NotNull
-    @Size(max = 10)
-    private String type;*/
+    @Column(name = "TYPE")
+    private ItemType type;
 
-    private ItemList.ItemTypeEnum type;
+//    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(mappedBy = "item")
+    private List<RestaurantEntity> restaurant = new ArrayList<RestaurantEntity>();
 
-    public long getId() {
+//    @LazyCollection(LazyCollectionOption.FALSE)
+    @ManyToMany(mappedBy = "item")
+    private List<CategoryEntity> category = new ArrayList<CategoryEntity>();
+
+    public List<CategoryEntity> getCategory() {
+        return category;
+    }
+
+    public void setCategory(List<CategoryEntity> category) {
+        this.category = category;
+    }
+
+    public List<RestaurantEntity> getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(List<RestaurantEntity> restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,36 +76,27 @@ public class ItemEntity implements Serializable {
         this.uuid = uuid;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getItem_name() {
+        return item_name;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setItemsName(String item_name) {
+        this.item_name = item_name;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    /*public String getType() {
+    public ItemType getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }*/
-
-    public ItemList.ItemTypeEnum getType() {
-        return type;
-    }
-
-    public void setType(ItemList.ItemTypeEnum type) {
+    public void setType(ItemType type) {
         this.type = type;
     }
 }
-

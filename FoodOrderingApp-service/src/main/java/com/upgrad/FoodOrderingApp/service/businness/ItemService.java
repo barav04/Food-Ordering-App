@@ -1,20 +1,14 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
-import com.upgrad.FoodOrderingApp.service.dao.ItemDao;
-import com.upgrad.FoodOrderingApp.service.dao.OrderDao;
-import com.upgrad.FoodOrderingApp.service.dao.OrderItemDao;
-import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrderItemEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrdersEntity;
-import com.upgrad.FoodOrderingApp.service.entity.RestaurantEntity;
-import com.upgrad.FoodOrderingApp.service.exception.ItemNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.upgrad.FoodOrderingApp.service.dao.*;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import com.upgrad.FoodOrderingApp.service.exception.RestaurantNotFoundException;
 
 @Service
 public class ItemService {
@@ -23,66 +17,66 @@ public class ItemService {
     private ItemDao itemDao;
 
     @Autowired
-    private OrderDao orderDao;
+    private RestaurantDao restaurantDao;
+
+   // @Autowired
+  //  private RestaurantItemDao restaurantItemDao;
 
     @Autowired
-    private OrderItemDao orderItemDao;
+    private CategoryDao categoryDao;
 
-    @Transactional
-    // A Method which takes the itemId as parameter for getItemEntityById
-    public ItemEntity getItemEntityById(final Integer itemId){
+  //  @Autowired
+  //  private CategoryItemDao categoryItemDao;
 
-        return itemDao.getItemById(itemId);
+
+
+    public ItemEntity getItemById(String uuid) {
+        return itemDao.getItemEntityById(uuid);
     }
 
-    @Transactional
-    // A Method which takes the item uuid as parameter for getItemEntityByUuid
-    public ItemEntity getItemEntityByUuid(final String itemUuid) throws ItemNotFoundException{
-
-        ItemEntity itemEntity = itemDao.getItemByUuid(itemUuid);
-        if (itemEntity == null) {
-            throw new ItemNotFoundException("INF-003", "No item by this id exist");
-        } else {
-            return itemEntity;
-        }
+    public List<OrderEntity> getOrdersByRestaurant(RestaurantEntity restaurantEntity) {
+        return itemDao.getOrdersByRestaurant(restaurantEntity);
     }
 
-    @Transactional
-    public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity) {
-
-        // List to store all items ordered in a restaurant
-        List<ItemEntity> itemEntityList = new ArrayList<>();
-
-        // Gets all the orders placed in the restaurant
-        for (OrdersEntity orderEntity : orderDao.getOrdersByRestaurant(restaurantEntity)) {
-            // Gets items from each order placed in the restaurant
-            for (OrderItemEntity orderItemEntity : orderItemDao.getItemsByOrder(orderEntity)) {
-                itemEntityList.add(orderItemEntity.getItem());
-            }
-        }
-
-        // Load all the item entities to hashmap
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        for (ItemEntity itemEntity : itemEntityList) {
-            Integer count = map.get(itemEntity.getUuid());
-            map.put(itemEntity.getUuid(), (count == null) ? 1 : count + 1);
-        }
-
-        // Sorts item entities
-        Map<String, Integer> treeMap = new TreeMap<String, Integer>(map);
-        List<ItemEntity> sortedItemEntityList = new ArrayList<ItemEntity>();
-        for (Map.Entry<String, Integer> entry : treeMap.entrySet()) {
-            sortedItemEntityList.add(itemDao.getItemByUuid(entry.getKey()));
-        }
-
-        // Reverse sort the collections
-        Collections.reverse(sortedItemEntityList);
-
-        return sortedItemEntityList;
+    public List<ItemEntity> getMostPopularItems(String resId) throws RestaurantNotFoundException {
+    	RestaurantEntity restaurantEntity = restaurantDao.restaurantByUUID(resId);
+    	if(restaurantEntity==null)
+    			throw new RestaurantNotFoundException("RNF-001","No restaurant by this id");
+    	return itemDao.getPopularOrders(restaurantEntity);
     }
 
-    public List<OrderItemEntity> getItemsByOrder(OrdersEntity orderEntity) {
-        return orderItemDao.getItemsByOrder(orderEntity);
+    public List<ItemEntity> getItemsByPopularity(RestaurantEntity restaurantEntity1) throws RestaurantNotFoundException {
+        RestaurantEntity restaurantEntity = restaurantEntity1;
+        if(restaurantEntity==null)
+            throw new RestaurantNotFoundException("RNF-001","No restaurant by this id");
+        return itemDao.getPopularOrders(restaurantEntity);
     }
+
+    /*
+    public List<ItemEntity> getItemsByCategoryAndRestaurant(String restaurantUuid, String categoryUuid) {
+
+        //Gets restaurant entity by restaurantUuid
+        RestaurantEntity restaurantEntity = restaurantDao.restaurantByUUID(restaurantUuid);
+
+        //Gets CategoryEntity  by CategoryUUID
+        CategoryEntity categoryEntity = categoryDao.getCategoryById(categoryUuid);
+
+        //Gets RestaurantItemEntity for given restaurantEntity
+        List<RestaurantItemEntity> restaurantItemEntities = restaurantItemDao.getItemsByRestaurant(restaurantEntity);
+
+        //Gets categoryItemEntities for given categoryEntity
+        List<CategoryItemEntity> categoryItemEntities = categoryItemDao.getItemsByCategory(categoryEntity);
+
+        List<ItemEntity> itemEntities = new LinkedList<>();
+        restaurantItemEntities.forEach(restaurantItemEntity -> {
+            categoryItemEntities.forEach(categoryItemEntity -> {
+                if (restaurantItemEntity.getItemId().equals(categoryItemEntity.getItemId())) {
+                    itemEntities.add(restaurantItemEntity.getItemId());
+                }
+            });
+        });
+        return itemEntities;
+    }
+
+     */
 }
-

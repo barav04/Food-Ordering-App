@@ -14,33 +14,24 @@ public class CategoryDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public  CategoryEntity getCategoryById(final Integer categoryId){
+    public List<CategoryEntity> getAllCategories() {
+        return  entityManager.createNamedQuery("allCategories", CategoryEntity.class).getResultList();
+    }
+
+    public CategoryEntity getCategoryById(String uuid) {
         try {
-            return entityManager.createNamedQuery("categoryById", CategoryEntity.class).setParameter("id", categoryId)
-                    .getSingleResult();
+            return entityManager.createNamedQuery("categoryById", CategoryEntity.class).setParameter("catuuid", uuid).getSingleResult();
         } catch(NoResultException nre) {
             return null;
         }
     }
 
-    public CategoryEntity getCategoryByUUId(final String categoryUUId){
+    public List<CategoryEntity> getAllCategoriesOrderedByName() {
         try {
-            return entityManager.createNamedQuery("categoryByUuid", CategoryEntity.class).setParameter("uuid", categoryUUId)
-                    .getSingleResult();
-        } catch(NoResultException nre) {
+            List<CategoryEntity> categoryEntities = entityManager.createNamedQuery("allCategories", CategoryEntity.class).getResultList();
+            return categoryEntities;
+        } catch (NoResultException nre) {
             return null;
         }
     }
-
-    public List<CategoryEntity> getAllCategories(){
-        try {
-            return entityManager.createNamedQuery("allCategories", CategoryEntity.class).getResultList();
-        } catch(NoResultException nre) {
-            return null;
-        }
-    }
-
 }
-
-
-

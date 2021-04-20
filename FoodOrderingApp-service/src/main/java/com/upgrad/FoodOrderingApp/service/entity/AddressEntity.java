@@ -1,78 +1,91 @@
 package com.upgrad.FoodOrderingApp.service.entity;
 
-import org.apache.commons.lang3.builder.*;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(name = "deleteAddressById", query = "delete from AddressEntity a where a.uuid=:addressuuid"),
+        @NamedQuery(name = "archiveAddressById", query = "update AddressEntity a set a.active = 0 where a.uuid=:addressuuid"),
+        @NamedQuery(name = "getAddressById", query = "select a from AddressEntity a where a.uuid=:addressuuid")
+})
+
+
 
 @Entity
-@Table(name = "address")
-@NamedQueries(
-        @NamedQuery(name = "fetchAddressById", query = "SELECT a FROM AddressEntity a WHERE a.uuid=:addressId and a.active = 1")
-)
-public class AddressEntity implements Serializable, Comparable<AddressEntity> {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "addressIdGenerator")
-    @SequenceGenerator(name = "addressIdGenerator", sequenceName = "address_id_seq", initialValue = 1, allocationSize = 1)
-    @ToStringExclude
-    @HashCodeExclude
-    private Integer id;
+@Table(name="address")
+public class AddressEntity {
 
-    @Column(name = "uuid")
-    @NotNull
-    @Size(max = 200)
-    private String uuid;
+    public AddressEntity() {
+    }
 
-    @Column(name = "flat_buil_number")
-    @Size(max = 255)
-    private String flatBuilNo;
-
-    @Column(name = "locality")
-    @Size(max = 255)
-    private String locality;
-
-    @Column(name = "city")
-    @Size(max = 30)
-    private String city;
-
-    @Column(name = "pincode")
-    @Size(max = 30)
-    private String pincode;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "state_id", referencedColumnName = "id")
-    private StateEntity state;
-
-    @Column(name = "active")
-    private Integer active;
-
-    @ManyToOne
-    @JoinTable(name = "customer_address",
-            joinColumns = {@JoinColumn(name = "address_id")},
-            inverseJoinColumns = {@JoinColumn(name = "customer_id")})
-    private CustomerEntity customer;
-
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
-    private List<OrderEntity> orders = new ArrayList<>();
-
-
-    public AddressEntity(String uuid, String flatBuilNo, String locality, String city, String pincode, StateEntity state) {
+    public AddressEntity(String uuid, String flatBuilNumber, String locality, String city, String pincode, StateEntity stateEntityId) {
         this.uuid = uuid;
-        this.flatBuilNo = flatBuilNo;
+        this.flat_buil_number = flat_buil_number;
         this.locality = locality;
         this.city = city;
         this.pincode = pincode;
-        this.state = state;
+        this.stateEntity = stateEntityId;
+        return;
     }
 
-    public AddressEntity() {
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
+    @Column(name = "UUID")
+    @Size(max = 200)
+    private String uuid;
+
+    @Column(name = "FLAT_BUIL_NUMBER")
+    @Size(max = 255)
+    private String flat_buil_number;
+
+    @Column(name = "LOCALITY")
+    @Size(max = 255)
+    private String locality;
+
+    @Column(name = "CITY")
+    @Size(max = 30)
+    private String city;
+
+    @Column(name = "PINCODE")
+    @Size(max = 30)
+    private String pincode;
+
+    @Column(name = "ACTIVE")
+    private int active;
+
+//    @OneToOne(mappedBy = "addressEntity")
+//    private RestaurantEntity restaurantEntity;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "STATE_ID")
+    private StateEntity stateEntity;
+
+    @ManyToMany(mappedBy = "address" ,cascade=CascadeType.ALL)
+    private List<CustomerEntity> customer = new ArrayList<CustomerEntity>();
+
+    public List<CustomerEntity> getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(List<CustomerEntity> customer) {
+        this.customer = customer;
+    }
+
+    public StateEntity getState() {
+        return stateEntity;
+    }
+
+    public void setState(StateEntity stateEntity) {
+        this.stateEntity = stateEntity;
     }
 
     public Integer getId() {
@@ -92,11 +105,11 @@ public class AddressEntity implements Serializable, Comparable<AddressEntity> {
     }
 
     public String getFlatBuilNo() {
-        return flatBuilNo;
+        return flat_buil_number;
     }
 
-    public void setFlatBuilNo(String flatBuilNo) {
-        this.flatBuilNo = flatBuilNo;
+    public void setFlatBuilNo(String flat_buil_number) {
+        this.flat_buil_number = flat_buil_number;
     }
 
     public String getLocality() {
@@ -123,56 +136,19 @@ public class AddressEntity implements Serializable, Comparable<AddressEntity> {
         this.pincode = pincode;
     }
 
-    public StateEntity getState() {
-        return state;
-    }
-
-    public void setState(StateEntity state) {
-        this.state = state;
-    }
-
-    public Integer getActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(Integer active) {
+    public void setActive(int active) {
         this.active = active;
     }
 
-    public CustomerEntity getCustomers() {
-        return customer;
-    }
-
-    public List<OrderEntity> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderEntity> orders) {
-        this.orders = orders;
-    }
-
-    public void setCustomers(CustomerEntity customer) {
-        this.customer = customer;
-    }
-
-    @Override
-    public int compareTo(AddressEntity i) {
-        return this.getId().compareTo(i.getId());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj, Boolean.FALSE);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Boolean.FALSE);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
-
+//    public RestaurantEntity getRestaurantEntity() {
+//        return restaurantEntity;
+//    }
+//
+//    public void setRestaurantEntity(RestaurantEntity restaurantEntity) {
+//        this.restaurantEntity = restaurantEntity;
+//    }
 }

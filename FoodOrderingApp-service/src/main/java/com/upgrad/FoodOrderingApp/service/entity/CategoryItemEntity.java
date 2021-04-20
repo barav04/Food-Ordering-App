@@ -1,57 +1,59 @@
 package com.upgrad.FoodOrderingApp.service.entity;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
+/*
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 
+
+@SuppressWarnings("ALL")
 @Entity
 @Table(name = "category_item")
-@NamedQueries(
-        {
-                @NamedQuery(name = "categoryItemById", query = "select c from CategoryItemEntity c where c.id=:id")
-        }
-)
+@NamedQueries({
 
-public class CategoryItemEntity implements Serializable {
+        @NamedQuery(name = "getItemsByCategory", query = "SELECT c FROM CategoryItemEntity c WHERE c.categoryId = :category ORDER BY LOWER(c.itemId.itemName) ASC "),
+})
+public class CategoryItemEntity {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "ITEM_ID")
-    private ItemEntity item;
+    @JoinColumn(name = "item_id")
+    @NotNull
+    private ItemEntity itemId;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "CATEGORY_ID")
-    private CategoryEntity category;
+    @JoinColumn(name = "category_id")
+    @NotNull
+    private CategoryEntity categoryId;
 
-    public long getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public ItemEntity getItem() {
-        return item;
+
+    public ItemEntity getItemId() {
+        return itemId;
     }
 
-    public void setItem(ItemEntity item) {
-        this.item = item;
+    public void setItemsId(ItemEntity itemId) {
+        this.itemId = itemId;
     }
 
-    public CategoryEntity getCategory() {
-        return category;
+
+    public CategoryEntity getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(CategoryEntity category) {
-        this.category = category;
+    public void setCategoryId(CategoryEntity categoryId) {
+        this.categoryId = categoryId;
     }
+
 }
+*/

@@ -1,127 +1,124 @@
 package com.upgrad.FoodOrderingApp.service.entity;
 
-import org.apache.commons.lang3.builder.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
+
+
+@NamedQueries({
+	@NamedQuery(name = "userAuthTokenByAccessToken", query = "select ut from CustomerAuthEntity ut where ut.accessToken =:accessToken"),
+	@NamedQuery(name = "userAuthTokenByUUID", query = "select ut from CustomerAuthEntity ut where ut.uuid =:uuid")})
 @Entity
 @Table(name = "customer_auth")
-@NamedQueries({
-        @NamedQuery(name = "Customer.ByAuthToken", query = "SELECT C FROM CustomerAuthEntity C WHERE C.accessToken = :accessToken")
-})
 public class CustomerAuthEntity implements Serializable {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "customerAuthIdGenerator")
-    @SequenceGenerator(name = "customerAuthIdGenerator", sequenceName = "customer_auth_id_seq", initialValue = 1, allocationSize = 1)
-    @ToStringExclude
-    @HashCodeExclude
-    private Integer id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "uuid")
-    @Size(max = 200)
-    @NotNull
-    private String uuid;
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    @NotNull
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ToStringExclude
-    @HashCodeExclude
-    @EqualsExclude
-    private CustomerEntity customer;
+	@Column(name = "UUID")
+	private String uuid;
 
-    @Column(name = "access_token")
-    @Size(max = 500)
-    @ToStringExclude
-    @HashCodeExclude
-    private String accessToken;
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private CustomerEntity customer;
 
-    @Column(name = "login_at")
-    LocalDateTime loginAt;
+	@Column(name = "access_token")
+	@NotNull
+	private String accessToken;
 
-    @Column(name = "logout_at")
-    LocalDateTime logoutAt;
+	@Column(name = "login_at")
+	@NotNull
+	private ZonedDateTime loginAt;
 
-    @Column(name = "expires_at")
-    LocalDateTime expiresAt;
+	@Column(name = "logout_at")
+	private ZonedDateTime logoutAt;
 
-    public Integer getId() {
-        return id;
-    }
+	@Column(name = "expires_at")
+	@NotNull
+	private ZonedDateTime expiresAt;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public String getUuid() {
+		return uuid;
+	}
 
-    public String getUuid() {
-        return uuid;
-    }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public CustomerEntity getCustomer() {
-        return customer;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
-    }
+	public CustomerEntity getUser() {
+		return customer;
+	}
 
-    public String getAccessToken() {
-        return accessToken;
-    }
+	public void setCustomer(CustomerEntity customer) {
+		this.customer = customer;
+	}
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
+	public String getAccessToken() {
+		return accessToken;
+	}
 
-    public LocalDateTime getLoginAt() {
-        return loginAt;
-    }
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
 
-    public void setLoginAt(LocalDateTime loginAt) {
-        this.loginAt = loginAt;
-    }
+	public ZonedDateTime getLoginAt() {
+		return loginAt;
+	}
 
-    public LocalDateTime getLogoutAt() {
-        return logoutAt;
-    }
+	public void setLoginAt(ZonedDateTime loginAt) {
+		this.loginAt = loginAt;
+	}
 
-    public void setLogoutAt(LocalDateTime logoutAt) {
-        this.logoutAt = logoutAt;
-    }
+	public ZonedDateTime getExpiresAt() {
+		return expiresAt;
+	}
 
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
+	public void setExpiresAt(ZonedDateTime expiresAt) {
+		this.expiresAt = expiresAt;
+	}
 
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
+	public ZonedDateTime getLogoutAt() {
+		return logoutAt;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj, Boolean.FALSE);
-    }
+	public void setLogoutAt(ZonedDateTime logoutAt) {
+		this.logoutAt = logoutAt;
+	}
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Boolean.FALSE);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		return new EqualsBuilder().append(this, obj).isEquals();
+	}
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this).hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
 }

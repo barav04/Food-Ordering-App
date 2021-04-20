@@ -1,153 +1,153 @@
 package com.upgrad.FoodOrderingApp.service.entity;
 
-import org.apache.commons.lang3.builder.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+@NamedQueries({
+		@NamedQuery(name = "customerByPhoneNumber", query = "select c from CustomerEntity c where c.contactNumber = :contact_number"),
+		@NamedQuery(name = "authenticateUserQuery", query = "select c from CustomerEntity c where c.contactNumber= :contactNumber and c.password= :password") })
 @Entity
 @Table(name = "customer")
-@NamedQueries({
-        @NamedQuery(name = "Customer.ByContact", query = "SELECT C FROM CustomerEntity C WHERE C.contactNumber = :contactNumber")
-})
 public class CustomerEntity implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "customerIdGenerator")
-    @SequenceGenerator(name = "customerIdGenerator", sequenceName = "customer_id_seq", initialValue = 1, allocationSize = 1)
-    @Column(name = "id")
-    @ToStringExclude
-    @HashCodeExclude
-    private Integer id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    @Column(name = "uuid")
-    @Size(max = 200)
-    @NotNull
-    private String uuid;
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Column(name = "firstname")
-    @NotNull
-    @Size(max = 30)
-    private String firstName;
+	@Column(name = "UUID")
+	private String uuid;
 
-    @Column(name = "lastname")
-    @Size(max = 30)
-    private String lastName;
+	@Column(name = "firstname")
+	@NotNull
+	private String firstName;
 
-    @Column(name = "email")
-    @Size(max = 50)
-    private String email;
+	@Column(name = "lastname")
+	@NotNull
+	private String lastName;
 
-    @Column(name = "contact_number")
-    @Size(max = 30)
-    @NotNull
-    private String contactNumber;
+	@Column(name = "email")
+	@NotNull
+	private String email;
 
-    @Column(name = "password")
-    @Size(max = 255)
-    @NotNull
-    @ToStringExclude
-    @HashCodeExclude
-    private String password;
+	@Column(name = "password")
+	private String password;
 
-    @Column(name = "salt")
-    @Size(max = 255)
-    @NotNull
-    @ToStringExclude
-    @HashCodeExclude
-    private String salt;
+	@Column(name = "SALT")
+	@NotNull
+	@Size(max = 200)
+	private String salt;
 
-    @OneToMany(mappedBy = "customer",
-            fetch = FetchType.EAGER)
-    private List<AddressEntity> addresses;
+	@Column(name = "contact_number")
+	@NotNull
+	@Size(max = 200)
+	private String contactNumber;
 
-    public Integer getId() {
-        return id;
-    }
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<AddressEntity> address = new ArrayList<AddressEntity>();
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public List<AddressEntity> getAddress() {
+		return address;
+	}
 
-    public String getUuid() {
-        return uuid;
-    }
+	public void setAddress(List<AddressEntity> address) {
+		this.address = address;
+	}
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public String getUuid() {
+		return uuid;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public String getContactNumber() {
-        return contactNumber;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getSalt() {
-        return salt;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
+	public String getSalt() {
+		return salt;
+	}
 
-    public List<AddressEntity> getAddresses() {
-        return addresses;
-    }
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 
-    public void setAddresses(List<AddressEntity> addresses) {
-        this.addresses = addresses;
-    }
+	public String getContactNumber() {
+		return contactNumber;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj, Boolean.FALSE);
-    }
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
 
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, Boolean.FALSE);
-    }
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		return new EqualsBuilder().append(this, obj).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(this).hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+	}
 }
