@@ -22,7 +22,7 @@ import javax.validation.constraints.*;
  * OrderList
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-18T22:28:24.976+05:30")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-19T16:03:13.674+01:00")
 
 public class OrderList   {
   @JsonProperty("id")
@@ -245,7 +245,7 @@ public class OrderList   {
     return itemQuantities;
   }
 
-  public void setItemQuantities(List<ItemQuantityResponse> itemQuantities) {
+  public void setItemsQuantities(List<ItemQuantityResponse> itemQuantities) {
     this.itemQuantities = itemQuantities;
   }
 

@@ -2,9 +2,6 @@ package com.upgrad.FoodOrderingApp.api.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.upgrad.FoodOrderingApp.api.model.ItemQuantity;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import javax.validation.constraints.*;
  * SaveOrderRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-18T22:28:24.976+05:30")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-19T16:03:13.674+01:00")
 
 public class SaveOrderRequest   {
   @JsonProperty("address_id")
@@ -96,9 +93,6 @@ public class SaveOrderRequest   {
    * @return bill
   **/
   @ApiModelProperty(required = true, value = "order bill")
-  @NotNull
-
-  @Valid
 
   public BigDecimal getBill() {
     return bill;
@@ -118,8 +112,6 @@ public class SaveOrderRequest   {
    * @return discount
   **/
   @ApiModelProperty(value = "order discount")
-
-  @Valid
 
   public BigDecimal getDiscount() {
     return discount;
@@ -197,7 +189,7 @@ public class SaveOrderRequest   {
     return itemQuantities;
   }
 
-  public void setItemQuantities(List<ItemQuantity> itemQuantities) {
+  public void setItemsQuantities(List<ItemQuantity> itemQuantities) {
     this.itemQuantities = itemQuantities;
   }
 
