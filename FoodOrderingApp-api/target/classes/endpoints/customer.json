@@ -34,7 +34,7 @@
         "tags": [
           "API#001 Customer Sign up"
         ],
-        "operationId": "saveCustomer",
+        "operationId": "registerCustomer",
         "summary": "signup",
         "description": "Each customer who needs access to FoodOrderingApp application should signup using their valid contact number, email and set a password for an authorized access.\n",
         "consumes": [

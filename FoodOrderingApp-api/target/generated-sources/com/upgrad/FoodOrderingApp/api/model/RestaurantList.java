@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * RestaurantList
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-20T01:55:13.488+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-20T02:16:46.800+01:00")
 
 public class RestaurantList   {
   @JsonProperty("id")

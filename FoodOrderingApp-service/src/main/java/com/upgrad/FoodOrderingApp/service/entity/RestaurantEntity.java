@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class RestaurantEntity {
         this.photo_url = photo_url;
     }
 
-    public Double getCustomer_rating() {
+    public BigDecimal getCustomer_rating() {
         return customer_rating;
     }
 

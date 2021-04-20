@@ -100,7 +100,7 @@
         "tags": [
           "API#001 Get restaurants by name"
         ],
-        "operationId": "restaurantsByName",
+        "operationId": "getRestaurantsByName",
         "summary": "Get restaurants by name",
         "description": "Customer can get a list of all restaurants by restaurant's name.\n",
         "consumes": [
@@ -250,7 +250,7 @@
         "tags": [
           "API#001 Get restaurant details"
         ],
-        "operationId": "restaurantByUUID",
+        "operationId": "getRestaurantById",
         "summary": "Get restaurant details",
         "description": "Customer can get any restaurant's details by its id.\n",
         "consumes": [
