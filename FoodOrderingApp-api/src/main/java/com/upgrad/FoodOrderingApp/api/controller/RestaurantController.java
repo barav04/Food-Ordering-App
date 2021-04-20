@@ -214,7 +214,7 @@ public class RestaurantController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.PUT, path = "/restaurant/{restaurant_id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(@RequestParam Double customerRating , @PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("authorization") final String authorization) throws RestaurantNotFoundException, InvalidRatingException, AuthorizationFailedException {
+    public ResponseEntity<RestaurantUpdatedResponse> updateRestaurantDetails(@RequestParam BigDecimal customerRating , @PathVariable("restaurant_id") final String restaurant_id, @RequestHeader("authorization") final String authorization) throws RestaurantNotFoundException, InvalidRatingException, AuthorizationFailedException {
         RestaurantEntity restaurantEntity = new RestaurantEntity();
         restaurantEntity.setUuid(restaurant_id);
         String bearerToken = null;

@@ -119,7 +119,7 @@ public class OrderController {
             itemQuantityResponse.setQuantity(orderItemEntity.getQuantity());
 
             //fetch every order item detail from item entity
-            itemQuantityResponse.setItems(new ItemQuantityResponseItem().
+            itemQuantityResponse.setItem(new ItemQuantityResponseItem().
                     id(UUID.fromString(orderItemEntity.getItemEntity().getUuid())).
                     itemName(orderItemEntity.getItemEntity().getItem_name()).
                     itemPrice(orderItemEntity.getItemEntity().getPrice()).

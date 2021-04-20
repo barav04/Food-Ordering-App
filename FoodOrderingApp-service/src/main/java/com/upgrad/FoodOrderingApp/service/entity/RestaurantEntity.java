@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class RestaurantEntity {
     private String photo_url;
 
     @Column(name = "CUSTOMER_RATING")
-    private Double customer_rating;
+    private BigDecimal customer_rating;
 
     @Column(name = "AVERAGE_PRICE_FOR_TWO")
     private int average_price_for_two;
@@ -98,11 +99,11 @@ public class RestaurantEntity {
         this.photo_url = photo_url;
     }
 
-    public Double getCustomer_rating() {
+    public BigDecimal getCustomer_rating() {
         return customer_rating;
     }
 
-    public void setCustomerRating(Double customer_rating) {
+    public void setCustomerRating(BigDecimal customer_rating) {
         this.customer_rating = customer_rating;
     }
 

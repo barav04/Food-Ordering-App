@@ -110,12 +110,12 @@ public class RestaurantService {
             throw new RestaurantNotFoundException("RNF-002", "Restaurant id field should not be empty");
         } else if(existingRestaurantEntity == null) {
             throw new RestaurantNotFoundException("RNF-001","No restaurant by this id");
-        } else if(restaurantEntity.getCustomer_rating() == null || !(restaurantEntity.getCustomer_rating().compareTo(new Double(0)) > 0 && restaurantEntity.getCustomer_rating().compareTo(new Double(6)) < 0 ) ) {
+        }/*else if(restaurantEntity.getCustomer_rating() == null || !(restaurantEntity.getCustomer_rating().compareTo(new BigDecimal(0)) > 0 && restaurantEntity.getCustomer_rating().compareTo(new (6)) < 0 ) ) {
             throw new InvalidRatingException("IRE-001","Restaurant should be in the range of 1 to 5");
-        }
+        }*/
         int numOfCustomersRated = existingRestaurantEntity.getNumber_of_customers_rated() + 1;
-        Double avgCustRating1 = existingRestaurantEntity.getCustomer_rating() + (restaurantEntity.getCustomer_rating());
-        Double avgCustRating = avgCustRating1/(new Double(2));
+        BigDecimal avgCustRating = existingRestaurantEntity.getCustomer_rating();
+        //Double avgCustRating = avgCustRating1/(new Double(2));
 
         restaurantEntity.setCustomerRating(avgCustRating);
         restaurantEntity.setNumberCustomersRated(numOfCustomersRated);
@@ -135,14 +135,14 @@ public class RestaurantService {
         }
 
         DecimalFormat format = new DecimalFormat("##.0"); //keeping format to one decimal
-        double restaurantRating = restaurantEntity.getCustomer_rating();
+        BigDecimal restaurantRating = restaurantEntity.getCustomer_rating();
         Integer restaurantNoOfCustomerRated = restaurantEntity.getNumber_of_customers_rated();
         restaurantEntity.setNumberCustomersRated(restaurantNoOfCustomerRated + 1);
 
         //calculating the new customer rating as per the given data and formula
-        double newCustomerRating = (restaurantRating * (restaurantNoOfCustomerRated.doubleValue()) + customerRating) / restaurantEntity.getNumber_of_customers_rated();
+        BigDecimal newCustomerRating = restaurantRating;
 
-        restaurantEntity.setCustomerRating(Double.parseDouble(format.format(newCustomerRating)));
+        restaurantEntity.setCustomerRating(newCustomerRating);
 
         //Updating the restautant in the db using the method updateRestaurantRating of restaurantDao.
         RestaurantEntity updatedRestaurantEntity = restaurantDao.updateRestaurantRating(restaurantEntity);

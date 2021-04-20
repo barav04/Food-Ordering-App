@@ -47,15 +47,15 @@ public class CategoryController {
         for(int i = 0; i < itemEntities.size(); i++) {
             ItemList itemList = new ItemList();
             itemList.setId(UUID.fromString(itemEntities.get(i).getUuid()));
-            itemList.setItemsName(itemEntities.get(i).getItem_name());
+            itemList.setItemName(itemEntities.get(i).getItem_name());
             itemList.setPrice(itemEntities.get(i).getPrice());
 
             //ItemList.ItemTypeEnum itemTypeEnum =ItemList.ItemTypeEnum.values()[Integer.parseInt(itemEntities.get(i).getType())];
             //itemList.setItemsType(itemTypeEnum);
             if (itemEntities.get(i).getType().equals("0")) {
-                itemList.setItemsType(ItemList.ItemTypeEnum.valueOf("VEG"));
+                itemList.setItemType(ItemList.ItemTypeEnum.valueOf("VEG"));
             } else {
-                itemList.setItemsType(ItemList.ItemTypeEnum.valueOf("NON_VEG"));
+                itemList.setItemType(ItemList.ItemTypeEnum.valueOf("NON_VEG"));
             }
             itemLists.add(itemList);
         }
