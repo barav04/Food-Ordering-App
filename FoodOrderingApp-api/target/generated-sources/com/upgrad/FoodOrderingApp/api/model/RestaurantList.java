@@ -2,21 +2,17 @@ package com.upgrad.FoodOrderingApp.api.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.upgrad.FoodOrderingApp.api.model.RestaurantDetailsResponseAddress;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * RestaurantList
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-20T02:16:46.800+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-20T02:58:48.656+01:00")
 
 public class RestaurantList   {
   @JsonProperty("id")
@@ -104,7 +100,7 @@ public class RestaurantList   {
     this.photoURL = photoURL;
   }
 
-  public RestaurantList customerRating(BigDecimal customerRating) {
+  public RestaurantList customerRating(Double customerRating) {
     this.customerRating = customerRating;
     return this;
   }

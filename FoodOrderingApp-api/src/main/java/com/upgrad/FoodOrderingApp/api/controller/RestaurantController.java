@@ -181,14 +181,14 @@ public class RestaurantController {
             for (int k = 0; k < itemEntities.size(); k++) {
                 ItemList itemList = new ItemList();
                 itemList.setId(UUID.fromString(itemEntities.get(k).getUuid()));
-                itemList.setItemsName(itemEntities.get(k).getItem_name());
+                itemList.setItemName(itemEntities.get(k).getItem_name());
                 ItemList.ItemTypeEnum itemType = ItemList.ItemTypeEnum.valueOf(itemEntities.get(k).getType().toString());
 
-                itemList.setItemsType(itemType);
+                itemList.setItemType(itemType);
                 itemList.setPrice(itemEntities.get(k).getPrice());
                 itemLists.add(itemList);
             }
-            catList.setItemsList(itemLists);
+            catList.setItemList(itemLists);
             categoriesList.add(catList);
         }
         RestaurantDetailsResponse restResponse = new RestaurantDetailsResponse()
