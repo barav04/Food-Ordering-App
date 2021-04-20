@@ -34,11 +34,11 @@ public class AddressDAO {
     }
 
     public AddressEntity getAddressById(String addressId){
-    	try {
-        return entityManager.createNamedQuery("getAddressById", AddressEntity.class).setParameter("addressuuid", addressId).getSingleResult();
-    	} catch(NoResultException nre) {
-    		return null;
-    	}
+        try {
+            return entityManager.createNamedQuery("getAddressById", AddressEntity.class).setParameter("addressuuid", addressId).getSingleResult();
+        } catch(NoResultException nre) {
+            return null;
+        }
     }
 
     public CustomerAddressEntity addEntrytoCustomerAddress(CustomerAddressEntity customerAddressEntity) {
