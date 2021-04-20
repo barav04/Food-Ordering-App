@@ -2,21 +2,25 @@ package com.upgrad.FoodOrderingApp.api.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.upgrad.FoodOrderingApp.api.model.CategoryList;
+import com.upgrad.FoodOrderingApp.api.model.RestaurantDetailsResponseAddress;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Restaurant details
  */
 @ApiModel(description = "Restaurant details")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-19T16:03:13.550+01:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2021-04-20T01:55:13.488+01:00")
 
 public class RestaurantDetailsResponse   {
   @JsonProperty("id")
@@ -29,7 +33,7 @@ public class RestaurantDetailsResponse   {
   private String photoURL = null;
 
   @JsonProperty("customer_rating")
-  private Double customerRating = null;
+  private BigDecimal customerRating = null;
 
   @JsonProperty("average_price")
   private Integer averagePrice = null;
@@ -105,7 +109,7 @@ public class RestaurantDetailsResponse   {
     this.photoURL = photoURL;
   }
 
-  public RestaurantDetailsResponse customerRating(Double customerRating) {
+  public RestaurantDetailsResponse customerRating(BigDecimal customerRating) {
     this.customerRating = customerRating;
     return this;
   }
@@ -116,11 +120,13 @@ public class RestaurantDetailsResponse   {
   **/
   @ApiModelProperty(value = "Rating of the restaurant")
 
-  public Double getCustomerRating() {
+  @Valid
+
+  public BigDecimal getCustomerRating() {
     return customerRating;
   }
 
-  public void setCustomerRating(Double customerRating) {
+  public void setCustomerRating(BigDecimal customerRating) {
     this.customerRating = customerRating;
   }
 
